@@ -4,7 +4,8 @@ import React, { useState, useEffect, useRef } from 'react';
 
 /**
  * THE 6-FIGURE BARBER DASHBOARD
- * Definitive Unified Version - Optimized for Vercel Deployment
+ * Definitive Unified Version - English (US)
+ * Optimized for local persistence and high performance.
  */
 
 // --- Types ---
@@ -27,7 +28,7 @@ interface UserData {
   name: string;
   goalType: 'weekly' | 'monthly';
   goalAmount: number;
-  simulatorValue: number;
+  simulatorValue: number; // Persistent simulator state
 }
 
 interface AppData {
@@ -54,6 +55,7 @@ const getInitialData = (): AppData => {
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
+      // Backwards compatibility for simulator persistence
       if (parsed.user && typeof parsed.user.simulatorValue === 'undefined') {
         parsed.user.simulatorValue = 0;
       }
@@ -77,6 +79,7 @@ const getStartOfPeriod = (date: Date, type: 'weekly' | 'monthly'): Date => {
   if (type === 'monthly') {
     d.setDate(1);
   } else {
+    // Start of week (Monday)
     const day = d.getDay();
     const diff = d.getDate() - day + (day === 0 ? -6 : 1); 
     d.setDate(diff);
@@ -102,32 +105,32 @@ const Onboarding = ({ onComplete }: { onComplete: (user: UserData) => void }) =>
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#121212] flex flex-col justify-center items-center p-6 w-full animate-in fade-in duration-500">
+    <div className="fixed inset-0 z-50 bg-bgMate flex flex-col justify-center items-center p-6 w-full animate-fade-in">
       <div className="w-full max-w-md text-center space-y-8">
         <div>
-            <h1 className="font-oswald text-5xl text-[#D4AF37] uppercase tracking-widest drop-shadow-lg leading-tight">Barber<br/>Empire</h1>
+            <h1 className="font-oswald text-5xl text-goldMet uppercase tracking-widest drop-shadow-lg leading-tight">Barber<br/>Empire</h1>
             <p className="text-gray-500 text-sm mt-2 font-montserrat">Setup your financial command center.</p>
         </div>
 
         <div className="space-y-6 text-left">
           <div>
-            <label className="text-xs text-[#D4AF37] uppercase font-bold ml-1 font-montserrat">Your Name / Nickname</label>
+            <label className="text-xs text-goldMet uppercase font-bold ml-1 font-montserrat">Your Name / Nickname</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Ex: The King"
-              className="w-full bg-[#1E1E1E] border border-gray-800 text-white p-4 rounded-xl focus:border-[#D4AF37] focus:outline-none transition-colors font-oswald text-lg placeholder-gray-600 mt-1"
+              className="w-full bg-cardCarbon border border-gray-800 text-white p-4 rounded-xl focus:border-goldMet focus:outline-none transition-colors font-oswald text-lg placeholder-gray-600 mt-1"
             />
           </div>
 
           <div>
-            <label className="text-xs text-[#D4AF37] uppercase font-bold ml-1 font-montserrat">Goal Type</label>
+            <label className="text-xs text-goldMet uppercase font-bold ml-1 font-montserrat">Goal Type</label>
             <div className="grid grid-cols-2 gap-3 mt-1">
               <button
                 onClick={() => setGoalType('weekly')}
                 className={`p-3 rounded-xl border font-bold transition-all font-montserrat text-sm ${
-                  goalType === 'weekly' ? 'border-[#D4AF37] text-[#D4AF37] bg-[#1E1E1E]' : 'border-gray-800 bg-[#1E1E1E] text-gray-500'
+                  goalType === 'weekly' ? 'border-goldMet text-goldMet bg-cardCarbon' : 'border-gray-800 bg-cardCarbon text-gray-500'
                 }`}
               >
                 WEEKLY
@@ -135,7 +138,7 @@ const Onboarding = ({ onComplete }: { onComplete: (user: UserData) => void }) =>
               <button
                 onClick={() => setGoalType('monthly')}
                 className={`p-3 rounded-xl border font-bold transition-all font-montserrat text-sm ${
-                  goalType === 'monthly' ? 'border-[#D4AF37] text-[#D4AF37] bg-[#1E1E1E]' : 'border-gray-800 bg-[#1E1E1E] text-gray-500'
+                  goalType === 'monthly' ? 'border-goldMet text-goldMet bg-cardCarbon' : 'border-gray-800 bg-cardCarbon text-gray-500'
                 }`}
               >
                 MONTHLY
@@ -144,20 +147,20 @@ const Onboarding = ({ onComplete }: { onComplete: (user: UserData) => void }) =>
           </div>
 
           <div>
-            <label className="text-xs text-[#D4AF37] uppercase font-bold ml-1 font-montserrat">Goal Amount ($)</label>
+            <label className="text-xs text-goldMet uppercase font-bold ml-1 font-montserrat">Goal Amount ($)</label>
             <input
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder={goalType === 'weekly' ? "Ex: 1500" : "Ex: 6000"}
-              className="w-full bg-[#1E1E1E] border border-gray-800 text-white p-4 rounded-xl focus:border-[#D4AF37] focus:outline-none transition-colors font-oswald text-lg placeholder-gray-600 mt-1"
+              className="w-full bg-cardCarbon border border-gray-800 text-white p-4 rounded-xl focus:border-goldMet focus:outline-none transition-colors font-oswald text-lg placeholder-gray-600 mt-1"
             />
           </div>
         </div>
 
         <button
           onClick={handleSubmit}
-          className="w-full bg-[#D4AF37] text-[#121212] font-oswald font-bold text-xl py-4 rounded-xl shadow-[0_0_15px_rgba(212,175,55,0.4)] hover:scale-[1.02] active:scale-95 transition-transform"
+          className="w-full bg-goldMet text-bgMate font-oswald font-bold text-xl py-4 rounded-xl shadow-[0_0_15px_rgba(212,175,55,0.4)] hover:scale-[1.02] active:scale-95 transition-transform"
         >
           LAUNCH MY EMPIRE <i className="fas fa-crown ml-2"></i>
         </button>
@@ -192,8 +195,8 @@ const SettingsModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center animate-in fade-in duration-300 p-4">
-      <div className="bg-[#1E1E1E] w-full max-w-md p-6 rounded-2xl border border-gray-800 animate-in slide-in-from-bottom-10">
+    <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center animate-fade-in p-4">
+      <div className="bg-cardCarbon w-full max-w-md p-6 rounded-2xl border border-gray-800 animate-slide-up">
         <div className="flex justify-between items-center mb-6">
           <h3 className="font-oswald text-2xl text-white uppercase">Settings</h3>
           <button onClick={onClose} className="text-gray-400 hover:text-white text-xl p-2">
@@ -208,7 +211,7 @@ const SettingsModal = ({
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full bg-[#121212] border border-gray-700 text-white p-3 rounded-xl focus:border-[#D4AF37] outline-none font-oswald"
+              className="w-full bg-bgMate border border-gray-700 text-white p-3 rounded-xl focus:border-goldMet outline-none font-oswald"
             />
           </div>
 
@@ -218,7 +221,7 @@ const SettingsModal = ({
                <button
                  onClick={() => setGoalType('weekly')}
                  className={`p-2 rounded-lg border font-bold text-xs ${
-                   goalType === 'weekly' ? 'border-[#D4AF37] text-[#D4AF37] bg-gray-900' : 'border-gray-700 text-gray-500 bg-[#121212]'
+                   goalType === 'weekly' ? 'border-goldMet text-goldMet bg-gray-900' : 'border-gray-700 text-gray-500 bg-bgMate'
                  }`}
                >
                  WEEKLY
@@ -226,7 +229,7 @@ const SettingsModal = ({
                <button
                  onClick={() => setGoalType('monthly')}
                  className={`p-2 rounded-lg border font-bold text-xs ${
-                   goalType === 'monthly' ? 'border-[#D4AF37] text-[#D4AF37] bg-gray-900' : 'border-gray-700 text-gray-500 bg-[#121212]'
+                   goalType === 'monthly' ? 'border-goldMet text-goldMet bg-gray-900' : 'border-gray-700 text-gray-500 bg-bgMate'
                  }`}
                >
                  MONTHLY
@@ -240,7 +243,7 @@ const SettingsModal = ({
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="w-full bg-[#121212] border border-gray-700 text-white p-3 rounded-xl focus:border-[#D4AF37] outline-none font-oswald"
+              className="w-full bg-bgMate border border-gray-700 text-white p-3 rounded-xl focus:border-goldMet outline-none font-oswald"
             />
           </div>
         </div>
@@ -252,7 +255,7 @@ const SettingsModal = ({
               onClose();
             }
           }}
-          className="w-full bg-[#D4AF37] text-[#121212] font-oswald font-bold text-lg py-3 rounded-xl shadow-lg mt-6 active:scale-95 transition-transform"
+          className="w-full bg-goldMet text-bgMate font-oswald font-bold text-lg py-3 rounded-xl shadow-lg mt-6 active:scale-95 transition-transform"
         >
           SAVE CHANGES
         </button>
@@ -292,8 +295,8 @@ const TransactionModal = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/90 flex items-end sm:items-center justify-center animate-in fade-in duration-300">
-      <div className="bg-[#1E1E1E] w-full max-w-md p-6 rounded-t-3xl sm:rounded-2xl border-t sm:border border-gray-800 animate-in slide-in-from-bottom-10">
+    <div className="fixed inset-0 z-50 bg-black/90 flex items-end sm:items-center justify-center animate-fade-in">
+      <div className="bg-cardCarbon w-full max-w-md p-6 rounded-t-3xl sm:rounded-2xl border-t sm:border border-gray-800 animate-slide-up">
         <div className="flex justify-between items-center mb-6">
           <h3 className="font-oswald text-2xl text-white uppercase">
             {getTitle()}
@@ -304,14 +307,14 @@ const TransactionModal = ({
         </div>
         
         <div className="relative mb-6">
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#C5A028] text-3xl font-oswald">$</span>
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-goldDim text-3xl font-oswald">$</span>
           <input
             ref={inputRef}
             type="number"
             value={val}
             onChange={(e) => setVal(e.target.value)}
             placeholder="0"
-            className="w-full bg-[#121212] border border-gray-700 text-white text-right font-oswald text-5xl p-4 pl-12 rounded-xl focus:border-[#D4AF37] focus:outline-none"
+            className="w-full bg-bgMate border border-gray-700 text-white text-right font-oswald text-5xl p-4 pl-12 rounded-xl focus:border-goldMet focus:outline-none"
           />
         </div>
         
@@ -322,7 +325,7 @@ const TransactionModal = ({
               onClose();
             }
           }}
-          className="w-full bg-[#D4AF37] text-[#121212] font-oswald font-bold text-xl py-4 rounded-xl shadow-lg active:scale-95 transition-transform"
+          className="w-full bg-goldMet text-bgMate font-oswald font-bold text-xl py-4 rounded-xl shadow-lg active:scale-95 transition-transform"
         >
           CONFIRM
         </button>
@@ -355,7 +358,7 @@ const HistoryModal = ({ isOpen, transactions, onClose }: { isOpen: boolean, tran
   const historyList = Object.values(grouped).sort((a, b) => b.dateObj.getTime() - a.dateObj.getTime());
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#121212] flex flex-col pt-12 animate-in fade-in duration-300">
+    <div className="fixed inset-0 z-50 bg-bgMate flex flex-col pt-12 animate-fade-in">
       <div className="flex justify-between items-center px-6 pb-4 border-b border-gray-800">
         <h2 className="font-oswald text-2xl text-white uppercase">Earnings History</h2>
         <button onClick={onClose} className="text-gray-400 hover:text-white text-xl p-2">
@@ -368,9 +371,9 @@ const HistoryModal = ({ isOpen, transactions, onClose }: { isOpen: boolean, tran
           <p className="text-center text-gray-600 mt-10 font-montserrat">No days recorded yet.</p>
         ) : (
           historyList.map((day, idx) => (
-            <div key={idx} className="bg-[#1E1E1E] border border-gray-800 p-4 rounded-xl flex justify-between items-center">
+            <div key={idx} className="bg-cardCarbon border border-gray-800 p-4 rounded-xl flex justify-between items-center">
               <div>
-                <p className="text-[#D4AF37] font-bold font-oswald text-lg">
+                <p className="text-goldMet font-bold font-oswald text-lg">
                   {day.dateObj.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'short' }).toUpperCase()}
                 </p>
                 <p className="text-xs text-gray-500 font-montserrat">{day.count} transactions</p>
@@ -421,6 +424,16 @@ export default function Dashboard() {
       ...prev,
       transactions: [...prev.transactions, newTx]
     }));
+
+    // Celebrate with confetti
+    if (typeof window !== 'undefined' && (window as any).confetti) {
+       (window as any).confetti({
+        particleCount: 80,
+        spread: 60,
+        origin: { y: 0.7 },
+        colors: ['#D4AF37', '#FCD34D', '#FFFFFF']
+      });
+    }
   };
 
   const handleUpdateUser = (updates: Partial<UserData>) => {
@@ -488,13 +501,7 @@ export default function Dashboard() {
   };
 
   if (!data.user) {
-    return (
-        <>
-            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-            <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
-            <Onboarding onComplete={(user) => setData({ ...data, user })} />
-        </>
-    );
+    return <Onboarding onComplete={(user) => setData({ ...data, user })} />;
   }
 
   // --- Calculations ---
@@ -537,11 +544,7 @@ export default function Dashboard() {
   const simValue = data.user.simulatorValue || 0;
 
   return (
-    <>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
-    
-    <div className="min-h-screen pb-12 w-full max-w-md mx-auto px-5 pt-6 animate-in fade-in duration-500 relative font-sans">
+    <div className="min-h-screen pb-12 w-full max-w-md mx-auto px-5 pt-6 animate-fade-in relative">
       
       {/* HEADER */}
       <header className="flex justify-between items-end border-b border-gray-800 pb-4 mb-6">
@@ -552,7 +555,7 @@ export default function Dashboard() {
         <div className="flex items-center gap-3">
             <button 
               onClick={() => setHistoryOpen(true)}
-              className="text-[#D4AF37] border border-gray-800 bg-gray-900 p-2 rounded-lg hover:bg-gray-800 transition-colors"
+              className="text-goldMet border border-gray-800 bg-gray-900 p-2 rounded-lg hover:bg-gray-800 transition-colors"
               aria-label="View History"
             >
                 <i className="fas fa-calendar-alt text-lg"></i>
@@ -568,20 +571,20 @@ export default function Dashboard() {
       </header>
 
       {/* FAST CASH ENTRY */}
-      <section className="bg-[#1E1E1E] rounded-2xl p-6 shadow-2xl border border-gray-800 relative overflow-hidden mb-6">
+      <section className="bg-cardCarbon rounded-2xl p-6 shadow-2xl border border-gray-800 relative overflow-hidden mb-6">
         <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
             <i className="fas fa-dollar-sign text-9xl text-white"></i>
         </div>
         
         <p className="text-gray-500 text-xs font-bold uppercase tracking-widest mb-1 font-montserrat">Gross Total Today</p>
         <div className="flex items-baseline relative z-10">
-            <span className="text-[#D4AF37] text-2xl mr-1 font-bold font-oswald">$</span>
+            <span className="text-goldMet text-2xl mr-1 font-bold font-oswald">$</span>
             <span className="font-oswald text-6xl text-white font-bold tracking-tight">{grossToday.toLocaleString()}</span>
         </div>
         
         {tipsToday > 0 && (
           <div className="relative z-10 mt-1 mb-4 flex items-center gap-2">
-            <i className="fas fa-coins text-[#C5A028] text-xs"></i>
+            <i className="fas fa-coins text-goldDim text-xs"></i>
             <p className="text-gray-400 text-xs font-montserrat">Includes <span className="text-white font-bold">${tipsToday}</span> in tips</p>
           </div>
         )}
@@ -605,7 +608,7 @@ export default function Dashboard() {
             
             <button 
               onClick={() => openTransactionModal('cash', 'tip')}
-              className="col-span-2 bg-gray-800 text-[#D4AF37] border border-[#D4AF37]/30 p-3 rounded-xl shadow-md active:scale-95 transition-all flex items-center justify-center gap-2 hover:bg-gray-700"
+              className="col-span-2 bg-gray-800 text-goldMet border border-goldMet/30 p-3 rounded-xl shadow-md active:scale-95 transition-all flex items-center justify-center gap-2 hover:bg-gray-700"
             >
                 <i className="fas fa-hand-holding-dollar"></i>
                 <span className="font-oswald font-bold text-base tracking-widest">+ TIP</span>
@@ -617,12 +620,12 @@ export default function Dashboard() {
       <section className="space-y-2 mb-6">
         <div className="flex justify-between items-end">
             <h3 className="font-oswald text-white text-xl uppercase">{data.user.goalType === 'weekly' ? 'Weekly' : 'Monthly'} Goal</h3>
-            <span className="text-[#D4AF37] font-bold font-oswald text-xl">{Math.round(goalProgress)}%</span>
+            <span className="text-goldMet font-bold font-oswald text-xl">{Math.round(goalProgress)}%</span>
         </div>
         
         <div className="w-full bg-gray-900 rounded-full h-4 relative overflow-hidden border border-gray-800">
             <div 
-              className="bg-gradient-to-r from-[#C5A028] to-[#D4AF37] h-4 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_#D4AF37]"
+              className="bg-gradient-to-r from-goldDim to-goldMet h-4 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_#D4AF37]"
               style={{ width: `${goalProgress}%` }}
             ></div>
         </div>
@@ -636,7 +639,7 @@ export default function Dashboard() {
             <i className={`fas fa-fire ${cutsPerDay > 0 ? 'text-orange-500 animate-pulse' : 'text-green-500'}`}></i>
             <p className="text-xs text-gray-300 font-montserrat">
               {cutsPerDay <= 0 
-                ? <span className="text-[#D4AF37] font-bold">Goal crushed! Everything extra is pure profit.</span>
+                ? <span className="text-goldMet font-bold">Goal crushed! Everything extra is pure profit.</span>
                 : <span>You need approx. <strong className="text-white">{cutsPerDay} cuts today</strong> to hit your goal.</span>
               }
             </p>
@@ -645,23 +648,23 @@ export default function Dashboard() {
 
       {/* BALANCE GRID */}
       <section className="grid grid-cols-2 gap-4 mb-6">
-        <div className="bg-[#1E1E1E] p-4 rounded-xl border border-gray-800">
+        <div className="bg-cardCarbon p-4 rounded-xl border border-gray-800">
             <p className="text-gray-500 text-[10px] uppercase font-bold font-montserrat">Daily Burn Rate</p>
-            <p className="font-oswald text-2xl text-[#ff4444] font-medium">-${Math.ceil(dailyExpenses)}</p>
+            <p className="font-oswald text-2xl text-alertRed font-medium">-${Math.ceil(dailyExpenses)}</p>
         </div>
-        <div className="bg-[#1E1E1E] p-4 rounded-xl border border-gray-800">
+        <div className="bg-cardCarbon p-4 rounded-xl border border-gray-800">
             <p className="text-gray-500 text-[10px] uppercase font-bold font-montserrat">Real Net (Today)</p>
-            <p className={`font-oswald text-2xl font-bold ${netToday >= 0 ? 'text-green-500' : 'text-[#ff4444]'}`}>
+            <p className={`font-oswald text-2xl font-bold ${netToday >= 0 ? 'text-successGreen' : 'text-alertRed'}`}>
               {netToday >= 0 ? '+' : ''}{Math.floor(netToday).toLocaleString()}
             </p>
         </div>
       </section>
 
       {/* REALITY CHECK (EXPENSES) */}
-      <section className="bg-[#1E1E1E] rounded-xl p-5 border border-gray-800 mb-6">
+      <section className="bg-cardCarbon rounded-xl p-5 border border-gray-800 mb-6">
         <div className="flex justify-between items-center mb-4">
             <h3 className="font-oswald text-white text-lg uppercase flex items-center gap-2">
-                <i className="fas fa-file-invoice-dollar text-[#ff4444]"></i> Fixed Expenses
+                <i className="fas fa-file-invoice-dollar text-alertRed"></i> Fixed Expenses
             </h3>
             <button 
               onClick={() => setShowExpenseForm(!showExpenseForm)}
@@ -672,13 +675,13 @@ export default function Dashboard() {
         </div>
 
         {showExpenseForm && (
-          <div className="space-y-3 mb-4 bg-black/30 p-3 rounded-lg animate-in fade-in duration-300">
+          <div className="space-y-3 mb-4 bg-black/30 p-3 rounded-lg animate-fade-in">
               <input 
                 type="text" 
                 placeholder="Name (Ex: Chair Rental)" 
                 value={expName}
                 onChange={e => setExpName(e.target.value)}
-                className="w-full bg-gray-900 text-white p-2 rounded text-sm border border-gray-700 focus:border-[#ff4444] outline-none" 
+                className="w-full bg-gray-900 text-white p-2 rounded text-sm border border-gray-700 focus:border-alertRed outline-none" 
               />
               <div className="flex gap-2">
                   <input 
@@ -686,7 +689,7 @@ export default function Dashboard() {
                     placeholder="$ Cost" 
                     value={expAmount}
                     onChange={e => setExpAmount(e.target.value)}
-                    className="w-1/2 bg-gray-900 text-white p-2 rounded text-sm border border-gray-700 focus:border-[#ff4444] outline-none" 
+                    className="w-1/2 bg-gray-900 text-white p-2 rounded text-sm border border-gray-700 focus:border-alertRed outline-none" 
                   />
                   <select 
                     value={expFreq}
@@ -699,7 +702,7 @@ export default function Dashboard() {
               </div>
               <button 
                 onClick={addExpense}
-                className="w-full bg-[#ff4444] text-white font-oswald text-sm py-2 rounded shadow hover:opacity-90"
+                className="w-full bg-alertRed text-white font-oswald text-sm py-2 rounded shadow hover:opacity-90"
               >
                 SAVE EXPENSE
               </button>
@@ -717,7 +720,7 @@ export default function Dashboard() {
                         <p className="text-[10px] text-gray-500 uppercase font-montserrat">{exp.frequency === 'daily' ? 'Daily' : 'Weekly'}</p>
                     </div>
                     <div className="flex items-center gap-3">
-                        <span className="text-[#ff4444] font-oswald text-sm">-${exp.amount}</span>
+                        <span className="text-alertRed font-oswald text-sm">-${exp.amount}</span>
                         <button onClick={() => removeExpense(exp.id)} className="text-gray-600 hover:text-red-500 transition-colors">
                           <i className="fas fa-trash-alt text-xs"></i>
                         </button>
@@ -729,8 +732,8 @@ export default function Dashboard() {
       </section>
 
       {/* PRICE RAISE SIMULATOR */}
-      <section className="bg-gradient-to-br from-[#1E1E1E] to-gray-900 rounded-xl p-5 border border-[#D4AF37]/20">
-        <h3 className="font-oswald text-[#D4AF37] text-lg uppercase mb-2">Price Raise Simulator</h3>
+      <section className="bg-gradient-to-br from-cardCarbon to-gray-900 rounded-xl p-5 border border-goldMet/20">
+        <h3 className="font-oswald text-goldMet text-lg uppercase mb-2">Price Raise Simulator</h3>
         <p className="text-xs text-gray-400 mb-4 font-montserrat">Simulate the impact of price adjustments.</p>
         
         <div className="mb-6 px-2">
@@ -746,11 +749,11 @@ export default function Dashboard() {
               step="1" 
               value={simValue} 
               onChange={(e) => handleSimulatorChange(parseInt(e.target.value))}
-              className="w-full accent-[#D4AF37]"
+              className="w-full accent-goldMet"
             />
         </div>
         
-        <div className="text-center">
+        <div className="text-center animate-pulse-gold">
             <span className="block text-xs text-gray-400 uppercase tracking-widest font-montserrat">Extra Yearly Profit</span>
             <span className="font-oswald text-4xl text-green-400 font-bold">
               +${(simValue * 5 * 260).toLocaleString()}
@@ -762,7 +765,7 @@ export default function Dashboard() {
       {/* FOOTER & RESET */}
       <footer className="text-center text-gray-700 text-[10px] mt-12 pb-8 font-montserrat space-y-4">
           <div>
-            <p className="font-bold tracking-widest text-[#C5A028]">THE 6-FIGURE BARBER DASHBOARD</p>
+            <p className="font-bold tracking-widest text-goldDim">THE 6-FIGURE BARBER DASHBOARD</p>
             <p>Your data is secured locally on this device.</p>
           </div>
           
@@ -776,7 +779,7 @@ export default function Dashboard() {
 
             <button 
                 onClick={resetApp}
-                className="text-gray-800 hover:text-[#ff4444] transition-colors underline decoration-1 underline-offset-4"
+                className="text-gray-800 hover:text-alertRed transition-colors underline decoration-1 underline-offset-4"
             >
                 Reset All (Factory Reset)
             </button>
@@ -806,6 +809,5 @@ export default function Dashboard() {
       />
 
     </div>
-    </>
   );
 }
