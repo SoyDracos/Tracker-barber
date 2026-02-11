@@ -9,13 +9,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // TEMA BARBERÍA
-        goldMet: '#D4AF37',       // Dorado Metálico
-        goldDim: '#C5A028',       // Dorado Oscuro
-        cardCarbon: '#1E1E1E',    // Gris Carbón (Tarjetas)
-        bgMate: '#121212',        // Negro Mate (Fondo)
-        alertRed: '#ff4444',      // Rojo Alerta
-        successGreen: '#00C851',  // Verde Éxito
+        // TUS COLORES DE AI STUDIO
+        goldMet: '#D4AF37',       // Dorado
+        goldDim: '#C5A028',       // Dorado oscuro
+        cardCarbon: '#1E1E1E',    // Gris carta
+        bgMate: '#121212',        // Fondo negro
+        alertRed: '#ff4444',
+        successGreen: '#00C851',
       },
       fontFamily: {
         oswald: ['Oswald', 'sans-serif'],
